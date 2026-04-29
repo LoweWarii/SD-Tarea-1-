@@ -1,0 +1,13 @@
+# Ignorar los datasets pesados
+data/santiago.csv.gz
+*.csv
+*.gz
+
+# Ignorar cachés de Python y Mac
+__pycache__/
+*.pyc
+.DS_Store
+
+# Ignorar entornos virtuales (si es que creaste alguno)
+venv/
+env/

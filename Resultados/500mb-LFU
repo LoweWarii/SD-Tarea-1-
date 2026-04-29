@@ -1,0 +1,1 @@
+{"resumen":{"total_consultas":5001,"hits":199,"misses":4802,"tiempo_ejecucion_segundos":675.94,"evicciones_totales_redis":0},"metricas_clave":{"hit_rate":0.0398,"throughput_req_sec":7.4,"latencia_p50_ms":78.43,"latencia_p95_ms":107.21,"eviction_rate_per_min":0.0,"cache_efficiency":79.04}}

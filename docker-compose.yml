@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  redis-server:
+    image: redis:alpine
+    command: redis-server --maxmemory 200mb --maxmemory-policy allkeys-lfu
+    ports:
+      - "6379:6379"
+
+  cache:
+    build: ./cache
+    ports:
+      - "8080:8000"
+    depends_on:
+      - redis-server
+      - generador_respuestas
+      - metricas
+
+  generador_respuestas:
+    build: ./generador_respuestas
+    volumes:
+      - ./data:/app/data
+    ports:
+      - "8001:8000" 
+
+  metricas:
+
+    build: ./metricas
+    ports:
+      - "8002:8000"
+
+  generador_trafico:
+    build: ./generador_trafico
+    # Sobreescribimos el comando del Dockerfile genérico para que solo corra el script
+    command: python3 main.py
+    depends_on:
+      - cache
+      
