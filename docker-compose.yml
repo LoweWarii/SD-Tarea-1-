@@ -1,38 +1,61 @@
 version: '3.8'
 
 services:
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka-broker
+    ports: 9092:9092
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_OFFERS_INTERLEAVED_HEADS_LAST: 'false'
+      KAFKA_OFFICE_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_LOG_DIRS: '/tmp/kraft-combined-logs'
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://0.0.0.0:29092,CONTROLLER://0.0.0.0:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+
   redis-server:
     image: redis:alpine
-    command: redis-server --maxmemory 200mb --maxmemory-policy allkeys-lfu
+    container_name: redis-cache
+    command: redis-server --maxmemory 50mb --maxmemory-policy allkeys-lfu
     ports:
       - "6379:6379"
 
-  cache:
-    build: ./cache
-    ports:
-      - "8080:8000"
-    depends_on:
-      - redis-server
-      - generador_respuestas
-      - metricas
-
   generador_respuestas:
     build: ./generador_respuestas
+    container_name: backend-respuestas
     volumes:
       - ./data:/app/data
     ports:
       - "8001:8000" 
+  consumidor_kafka:
+        build: ./consumidor_kafka
+        depends_on:
+          - kafka
+          - redis-server
+          - generador_respuestas
+          - metricas
+          environment:
+            - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+            # deploy con replicas para escalar horizontal
+            deploy:
+              replicas: 1
 
-  metricas:
-
-    build: ./metricas
-    ports:
-      - "8002:8000"
-
+   metricas:
+          build: ./metricas
+          container_name: sistema-metricas
+          ports:
+            - "8002:8000"
+  
   generador_trafico:
     build: ./generador_trafico
-    # Sobreescribimos el comando del Dockerfile genérico para que solo corra el script
+    container_name: producer-trafico
     command: python3 main.py
     depends_on:
-      - cache
+      - kafka
       
