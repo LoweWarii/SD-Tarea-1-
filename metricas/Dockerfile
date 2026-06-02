@@ -3,8 +3,7 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Instalar librerías básicas necesarias
-RUN pip install fastapi uvicorn requests redis pandas numpy pydantic
-
+RUN pip install --no-cache-dir fastapi uvicorn pydantic numpy
 COPY . /app
 
 # Exponer el puerto por defecto
