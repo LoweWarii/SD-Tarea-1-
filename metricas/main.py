@@ -54,14 +54,14 @@ def generar_reporte():
     p95 = float(np.percentile(latencias_exitosas, 95)) if latencias_exitosas else 0.0
    
    #tasa de fallo y recuperacion
-   retry_rate = (retires / total_eventos) * 100 if total_eventos > 0 else 0.0
+    retry_rate = (retries / total_eventos) * 100 if total_eventos > 0 else 0.0
 
-   total_fallas = recoveries + dlqs
-   recovery_rate = (recoveries/total_fallas) * 100 if total_fallas > 0 else 0.0
+    total_fallas_iniciales = recoveries + dlqs
+    recovery_rate = (recoveries / total_fallas_iniciales) * 100 if total_fallas_iniciales > 0 else 0.0
    
-   dlq_rate = (dlqs / total_eventos) * 100 if total_eventos > 0 else 0.0
+    dlq_rate = (dlqs / total_eventos) * 100 if total_eventos > 0 else 0.0
 
-   return {
+    return {
         "resumen": {
             "tiempo_ejecucion_segundos": round(tiempo_transcurrido, 2),
             "total_eventos_registrados": total_eventos,
