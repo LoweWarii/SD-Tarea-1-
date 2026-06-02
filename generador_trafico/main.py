@@ -53,7 +53,7 @@ def simular_trafico(distribucion="uniforme", num_requests=2500, delay_ms=10):
             zona_b = random.choice([z for z in ZONAS if z != zona])
             payload["params"]["zone_a"] = zona
             payload["params"]["zone_b"] = zona_b
-        else:
+    else:
             payload["params"]["zone_id"] = zona
 
             producer.produce(

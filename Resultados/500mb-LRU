@@ -1,1 +1,2 @@
 {"resumen":{"total_consultas":5001,"hits":208,"misses":4793,"tiempo_ejecucion_segundos":724.45,"evicciones_totales_redis":0},"metricas_clave":{"hit_rate":0.0416,"throughput_req_sec":6.9,"latencia_p50_ms":81.01,"latencia_p95_ms":127.14,"eviction_rate_per_min":0.0,"cache_efficiency":87.9}}
+{"resumen":{"total_consultas":12002,"hits":487,"misses":11515,"tiempo_ejecucion_segundos":5901.49,"evicciones_totales_redis":0},"metricas_clave":{"hit_rate":0.0406,"throughput_req_sec":2.03,"latencia_p50_ms":79.1,"latencia_p95_ms":108.04,"eviction_rate_per_min":0.0,"cache_efficiency":80.47}}
