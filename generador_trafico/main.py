@@ -63,17 +63,18 @@ def simular_trafico(distribucion="uniforme", num_requests=2500, delay_ms=10):
             callback=delivery_report
         )
         #para que nos e sature kafka con los callbacks
-        producer.poll(0)
-       if (i + 1) % 100 == 0:
+    producer.produce(TOPIC_PRINCIPAL, key=req_id, value=json.dumps(payload))
+    producer.poll(0)
+    if (i + 1) % 100 == 0:
             print(f"[{i+1}/{num_requests}]  Mensajes encolados en Kafka...")       
-        time.sleep(delay_ms / 1000.0)
+            time.sleep(delay_ms / 1000.0)
        
-       producer.flush()
+            producer.flush()
     print(f" Simulación {distribucion.upper()} finalizada y entregada a Kafka.\n")
 
     if __name__ == "__main__":
     
-    print(" esperar para que kafka opere")
+         print(" esperar para que kafka opere")
     time.sleep(10)
  
     print("--- PRUEBA 1: Distribución Uniforme ---")

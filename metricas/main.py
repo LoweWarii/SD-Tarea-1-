@@ -49,7 +49,7 @@ def generar_reporte():
     throughput = exitosos / tiempo_transcurrido if tiempo_transcurrido >0 else 0
 
     #latencia en consultas exitosas
-    latencias_exitosas = [e["latencia"] for e in logs_eventosif e["tipo"]in ["HIT", "MISS", "MISS_RECOVERY"]]
+    latencias_exitosas = [e["latencia"] for e in logs_eventos if e["tipo"]in ["HIT", "MISS", "MISS_RECOVERY"]]
     p50 = float(np.percentile(latencias_exitosas, 50)) if latencias_exitosas else 0.0
     p95 = float(np.percentile(latencias_exitosas, 95)) if latencias_exitosas else 0.0
    
