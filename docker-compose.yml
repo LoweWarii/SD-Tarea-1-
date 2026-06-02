@@ -40,13 +40,13 @@ services:
           - redis-server
           - generador_respuestas
           - metricas
-          environment:
+        environment:
             - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
             # deploy con replicas para escalar horizontal
-            deploy:
+        deploy:
               replicas: 1
 
-   metricas:
+  metricas:
           build: ./metricas
           container_name: sistema-metricas
           ports:
